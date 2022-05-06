@@ -7,7 +7,7 @@ export DISABLE_AUTO_TITLE='true'
 DISABLE_AUTO_TITLE="true"
 export TERM=tmux-256color
 export FZF_DEFAULT_OPTS=''
-
+mkdir -p $ZDOTDIR/cache
 HISTFILE=~/.zsh_history
 setopt appendhistory
 
