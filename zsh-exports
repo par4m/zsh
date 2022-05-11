@@ -3,7 +3,7 @@
 HISTSIZE=1000000
 SAVEHIST=1000000
 # eval "$(fnm env)"
-eval "$(zoxide init zsh)"
+# eval "$(zoxide init zsh)"
 # Source files
 source /usr/share/fzf/key-bindings.zsh
 source /usr/share/fzf/completion.zsh

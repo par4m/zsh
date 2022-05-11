@@ -1,7 +1,8 @@
 #!/bin/sh
 
-alias j='zi'
+# alias j='zi'
 # alias f='zi'
+alias h='cd ~/'
 alias g='lazygit'
 alias zsh-update-plugins="find "$ZDOTDIR/plugins" -type d -exec test -e '{}/.git' ';' -print0 | xargs -I {} -0 git -C {} pull -q"
 alias nvimrc='nvim ~/.config/nvim/'
@@ -113,12 +114,12 @@ alias grep="rg"
 # alias a='fasd -a'        # any
 # alias s='fasd -si'       # show / search / select
 # alias d='fasd -d'        # directory
-alias f='fasd -f'        # file
+# alias f='fasd -f'        # file
 # alias sd='fasd -sid'     # interactive directory selection
 # alias sf='fasd -sif'     # interactive file selection
 # alias z='z'     # cd, same functionality as j in autojump
 # alias zz='fasd_cd -d -i' # cd with interactive selection
-alias v='f -e "$EDITOR"'
+# alias v='f -e "$EDITOR"'
 # alias o='a -e xdg-open'
 # alias j='zz'
 
