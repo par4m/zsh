@@ -57,7 +57,7 @@ if which fasd >/dev/null; then
 
         alias v >/dev/null && unalias v
         alias vd >/dev/null && unalias vd
-        alias z >/dev/null && unalias z
+        # alias z >/dev/null && unalias z
 
         # edit given file or search in recently used files
         function v {
@@ -76,10 +76,10 @@ if which fasd >/dev/null; then
         }
 
         # cd into given dir or search in recently used dirs
-        function z {
-            [ $# -eq 1 ] && test -d "$1" && cd "$1" && return
-            local dir
-            dir="$(fasd -Rdl "$*" | fzf -1 -0 --no-sort +m)" && cd "${dir}" || return 1
-        }
+        # function z {
+        #     [ $# -eq 1 ] && test -d "$1" && cd "$1" && return
+        #     local dir
+        #     dir="$(fasd -Rdl "$*" | fzf -1 -0 --no-sort +m)" && cd "${dir}" || return 1
+        # }
     fi
 fi

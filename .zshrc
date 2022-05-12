@@ -103,3 +103,5 @@ fi;
 # autoload edit-command-line; zle -N edit-command-line
 # bindkey '^e' edit-command-line
 
+# zoxide to be at the end of zshrc 
+eval "$(zoxide init zsh)"
