@@ -5,8 +5,6 @@ alias f='zi'
 # alias h='cd ~/'
 alias g='lazygit'
 alias zsh-update-plugins="find "$ZDOTDIR/plugins" -type d -exec test -e '{}/.git' ';' -print0 | xargs -I {} -0 git -C {} pull -q"
-alias nvimrc='nvim ~/.config/nvim/'
-
 
 # get fastest mirrors for Arch Linux
 alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
@@ -131,3 +129,9 @@ alias zt="zi && tmux"
 
 # run zoxide interactive and then fuzzy find files in the selected dir then open selected file with $EDITOR
 alias zd="zi && fe"
+
+
+alias nvd='cd ~/.config/nvim/ && fe'
+alias zshd='cd "$ZDOTDIR" && fe'
+alias dotf='cd ~/dotfiles && fe'
+

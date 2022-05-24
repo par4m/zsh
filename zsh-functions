@@ -47,42 +47,45 @@ function timezsh() {
 
 
 
-# fasd
-if which fasd >/dev/null; then
-    # install fasd hooks and basic aliases in the shell
-    # eval "$(fasd --init auto)"
+# # fasd
+# if which fasd >/dev/null; then
+#     # install fasd hooks and basic aliases in the shell
+#     # eval "$(fasd --init auto)"
+#
+#     # if there is fzf available use it to search fasd results
+#     if which fzf >/dev/null; then
+#
+#         alias v >/dev/null && unalias v
+#         alias vd >/dev/null && unalias vd
+#         # alias z >/dev/null && unalias z
+#
+#         # edit given file or search in recently used files and cd into the directory containing the file
+#       
+#     fi
+# fi
 
-    # if there is fzf available use it to search fasd results
-    if which fzf >/dev/null; then
+function v {
+  local file
+   # if arg1 is a path to existing file then simply open it in the editor
+  test -e "$1" && $EDITOR "$@" && return
+   # else use fasd and fzf to search for recent files
+  file="$(fasd -Rfl "$*" | fzf -1 -0 --no-sort +m)" && dir=$(dirname "$file") && cd "$dir" && $EDITOR "${file}" || $EDITOR "$@"
+}
 
-        alias v >/dev/null && unalias v
-        alias vd >/dev/null && unalias vd
-        # alias z >/dev/null && unalias z
+# cd into the directory containing a recently used file and open fzf to browse
+function vd {
+  local dir
+  local file
+  file="$(fasd -Rfl "$*" | fzf -1 -0 --no-sort +m)" && dir=$(dirname "$file") && cd "$dir" && fe
+}
 
-        # edit given file or search in recently used files and cd into the directory containing the file
-        function v {
-            local file
-            # if arg1 is a path to existing file then simply open it in the editor
-            test -e "$1" && $EDITOR "$@" && return
-            # else use fasd and fzf to search for recent files
-            file="$(fasd -Rfl "$*" | fzf -1 -0 --no-sort +m)" && dir=$(dirname "$file") && cd "$dir" && $EDITOR "${file}" || $EDITOR "$@"
-        }
+# cd into given dir or search in recently used dirs
+# function z {
+#   [ $# -eq 1 ] && test -d "$1" && cd "$1" && return
+#   local dir
+#   dir="$(fasd -Rdl "$*" | fzf -1 -0 --no-sort +m)" && cd "${dir}" || return 1
+# }
 
-        # cd into the directory containing a recently used file and open fzf to browse
-        function vd {
-            local dir
-            local file
-            file="$(fasd -Rfl "$*" | fzf -1 -0 --no-sort +m)" && dir=$(dirname "$file") && cd "$dir" && fe
-        }
-
-        # cd into given dir or search in recently used dirs
-        # function z {
-        #     [ $# -eq 1 ] && test -d "$1" && cd "$1" && return
-        #     local dir
-        #     dir="$(fasd -Rdl "$*" | fzf -1 -0 --no-sort +m)" && cd "${dir}" || return 1
-        # }
-    fi
-fi
 
 # fe [FUZZY PATTERN] - Open the selected file in the dir with the default editor
 #   - Bypass fuzzy finder if there's only one match (--select-1)
