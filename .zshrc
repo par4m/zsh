@@ -8,8 +8,10 @@ DISABLE_AUTO_TITLE="true"
 export TERM=tmux-256color
 # export FZF_DEFAULT_OPTS=''
 export FZF_DEFAULT_OPTS='--height 50% --layout=default --border'
-export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --strip-cwd-prefix --follow --exclude .git'
 export _ZO_FZF_OPTS='--height 60% --layout=default --border'
+
+
 mkdir -p $ZDOTDIR/cache
 HISTFILE=~/.zsh_history
 setopt appendhistory
