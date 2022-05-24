@@ -125,3 +125,9 @@ alias grep="rg"
 # alias o='a -e xdg-open'
 # alias j='zz'
 
+# run zoxide interactive then tmux in the selected dir
+alias zt="zi && tmux"
+
+
+# run zoxide interactive and then fuzzy find files in the selected dir then open selected file with $EDITOR
+alias zd="zi && fe"

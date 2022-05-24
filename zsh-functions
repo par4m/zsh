@@ -59,20 +59,20 @@ if which fasd >/dev/null; then
         alias vd >/dev/null && unalias vd
         # alias z >/dev/null && unalias z
 
-        # edit given file or search in recently used files
+        # edit given file or search in recently used files and cd into the directory containing the file
         function v {
             local file
             # if arg1 is a path to existing file then simply open it in the editor
             test -e "$1" && $EDITOR "$@" && return
             # else use fasd and fzf to search for recent files
-            file="$(fasd -Rfl "$*" | fzf -1 -0 --no-sort +m)" && $EDITOR "${file}" || $EDITOR "$@"
+            file="$(fasd -Rfl "$*" | fzf -1 -0 --no-sort +m)" && dir=$(dirname "$file") && cd "$dir" && $EDITOR "${file}" || $EDITOR "$@"
         }
 
-        # cd into the directory containing a recently used file
+        # cd into the directory containing a recently used file and open fzf to browse
         function vd {
             local dir
             local file
-            file="$(fasd -Rfl "$*" | fzf -1 -0 --no-sort +m)" && dir=$(dirname "$file") && cd "$dir"
+            file="$(fasd -Rfl "$*" | fzf -1 -0 --no-sort +m)" && dir=$(dirname "$file") && cd "$dir" && fe
         }
 
         # cd into given dir or search in recently used dirs
@@ -83,3 +83,20 @@ if which fasd >/dev/null; then
         # }
     fi
 fi
+
+# fe [FUZZY PATTERN] - Open the selected file in the dir with the default editor
+#   - Bypass fuzzy finder if there's only one match (--select-1)
+#   - Exit if there's no match (--exit-0)
+function fe() {
+  local files
+  IFS=$'\n' files=($(fzf --query="$1" --multi --select-1 --exit-0 --preview\
+  'bat --color "always" {}' --preview-window=right:60% ))
+  [[ -n "$files" ]] && ${EDITOR:-nvim} "${files[@]}"
+}
+
+
+# function cdf() {
+#   local file
+#   local dir
+#   file=$(fzf +m -q "$1") && dir=$(dirname "$file") && cd "$dir" || exit
+# }
