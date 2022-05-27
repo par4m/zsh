@@ -18,7 +18,7 @@ mkdir -p $ZDOTDIR/cache
 HISTFILE=~/.zsh_history
 setopt appendhistory
 
-# skip_global_compinit=1
+skip_global_compinit=1
 # some useful options (man zshoptions)
 setopt autocd extendedglob nomatch menucomplete
 setopt interactive_comments
@@ -65,6 +65,9 @@ fi
 autoload -Uz compinit -i -d "$ZSH_COMPDUMP"
 [[ "$ZSH_COMPDUMP".zwc -nt "$ZSH_COMPDUMP" ]] || zcompile-many "$ZSH_COMPDUMP"
 unfunction zcompile-many
+
+ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+
 zstyle ':completion:*' menu select
 # zstyle ':completion::complete:lsof:*' menu yes select
 zmodload zsh/complist
@@ -106,9 +109,21 @@ zsh_add_plugin "hlissner/zsh-autopair"
 # More completions https://github.com/zsh-users/zsh-completions
 
 
-
-
-
+# fzf-tab settings
+# disable sort when completing `git checkout`
+zstyle ':completion:*:git-checkout:*' sort false
+# set descriptions format to enable group support
+zstyle ':completion:*:descriptions' format '[%d]'
+# set list-colors to enable filename colorizing
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# preview directory's content with exa when completing cd
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+zstyle ':fzf-tab:complete:ls:*' fzf-preview 'exa -1 --color=always $realpath'
+zstyle ':fzf-tab:complete:*' popup-pad 30 0 # set a bigger width to the popup win
+# switch group using `,` and `.`
+zstyle ':fzf-tab:*' switch-group ',' '.'
+# use tmux popup windows for completion
+zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 
 
 # Key-bindings
@@ -128,11 +143,11 @@ bindkey -r "^d"
 
 
 
-# if [[ -n ${ZSH_COMPDUMP}(#qN.mh+24) ]]; then
-# 	compinit -i -d "$ZSH_COMPDUMP";
-# else
-# 	compinit -C -d "$ZSH_COMPDUMP";
-# fi;
+if [[ -n ${ZSH_COMPDUMP}(#qN.mh+24) ]]; then
+	compinit -i -d "$ZSH_COMPDUMP";
+else
+	compinit -C -d "$ZSH_COMPDUMP";
+fi;
 
 # Edit line in vim with ctrl-e:
 # autoload edit-command-line; zle -N edit-command-line
@@ -147,20 +162,3 @@ source $ZDOTDIR/p10k.zsh
 # zoxide to be at the end of zshrc 
 eval "$(zoxide init zsh)"
 
-
-
-# fzf-tab
-# disable sort when completing `git checkout`
-# zstyle ':completion:*:git-checkout:*' sort false
-# # set descriptions format to enable group support
-# zstyle ':completion:*:descriptions' format '[%d]'
-# # set list-colors to enable filename colorizing
-# zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-# # preview directory's content with exa when completing cd
-# zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
-# zstyle ':fzf-tab:complete:ls:*' fzf-preview 'exa -1 --color=always $realpath'
-# zstyle ':fzf-tab:complete:*' popup-pad 30 0 # set a bigger width to the popup win
-# # switch group using `,` and `.`
-# zstyle ':fzf-tab:*' switch-group ',' '.'
-# # use tmux popup windows for completion
-# zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
