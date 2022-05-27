@@ -1,13 +1,15 @@
 # export ZDOTDIR=$HOME/.config/zsh
 # source "$HOME/.config/zsh/.zshrc"
 #!/bin/sh
+zmodload zsh/zprof
 export ZDOTDIR=$HOME/.config/zsh
+export ZPLUGDIR=$ZDOTDIR/plugins
 export ZSH_COMPDUMP=$ZDOTDIR/cache/.zcompdump-$HOST
 export DISABLE_AUTO_TITLE='true'
 DISABLE_AUTO_TITLE="true"
 export TERM=tmux-256color
 # export FZF_DEFAULT_OPTS=''
-export FZF_DEFAULT_OPTS='--height 50% --layout=default --border'
+export FZF_DEFAULT_OPTS='--height 70% --layout=default --border'
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --strip-cwd-prefix --follow --exclude .git'
 export _ZO_FZF_OPTS='--height 60% --layout=default --border'
 
@@ -16,7 +18,7 @@ mkdir -p $ZDOTDIR/cache
 HISTFILE=~/.zsh_history
 setopt appendhistory
 
-skip_global_compinit=1
+# skip_global_compinit=1
 # some useful options (man zshoptions)
 setopt autocd extendedglob nomatch menucomplete
 setopt interactive_comments
@@ -27,8 +29,42 @@ zle_highlight=('paste:none')
 unsetopt BEEP
 
 
+# Test
+function zcompile-many() {
+  local f
+  for f; do zcompile -R -- "$f".zwc "$f"; done
+}
+
+
+# Clone and compile to wordcode missing plugins.
+# zsh-syntax-highlighting
+if [[ ! -e $ZPLUGDIR/zsh-syntax-highlighting ]]; then
+  git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git $ZPLUGDIR/zsh-syntax-highlighting
+  zcompile-many $ZPLUGDIR/zsh-syntax-highlighting/{zsh-syntax-highlighting.zsh,highlighters/*/*.zsh}
+fi
+# zsh-autosuggestions
+if [[ ! -e $ZPLUGDIR/zsh-autosuggestions ]]; then
+  git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions.git $ZPLUGDIR/zsh-autosuggestions
+  zcompile-many $ZPLUGDIR/zsh-autosuggestions/{zsh-autosuggestions.zsh,src/**/*.zsh}
+fi
+# powerlevel10k
+if [[ ! -e $ZPLUGDIR/powerlevel10k ]]; then
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZPLUGDIR/powerlevel10k
+  make -C $ZPLUGDIR/powerlevel10k pkg
+fi
+
+
+
+
+# Activate Powerlevel10k Instant Prompt.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # completions
 autoload -Uz compinit -i -d "$ZSH_COMPDUMP"
+[[ "$ZSH_COMPDUMP".zwc -nt "$ZSH_COMPDUMP" ]] || zcompile-many "$ZSH_COMPDUMP"
+unfunction zcompile-many
 zstyle ':completion:*' menu select
 # zstyle ':completion::complete:lsof:*' menu yes select
 zmodload zsh/complist
@@ -57,17 +93,19 @@ source "$ZDOTDIR/zsh-functions"
 zsh_add_file "zsh-exports"
 zsh_add_file "zsh-vim-mode"
 zsh_add_file "zsh-aliases"
-zsh_add_file "zsh-prompt"
+# zsh_add_file "zsh-prompt"
 
 # Plugins
 zsh_add_plugin "Aloxaf/fzf-tab"
-zsh_add_plugin "zsh-users/zsh-autosuggestions"
+# zsh_add_plugin "zsh-users/zsh-autosuggestions"
 # zsh_add_plugin "zsh-users/zsh-completions"
-zsh_add_plugin "zsh-users/zsh-syntax-highlighting"
+# zsh_add_plugin "zsh-users/zsh-syntax-highlighting"
 zsh_add_plugin "hlissner/zsh-autopair"
 # zsh_add_completion "esc/conda-zsh-completion" false
 # For more plugins: https://github.com/unixorn/awesome-zsh-plugins
 # More completions https://github.com/zsh-users/zsh-completions
+
+
 
 
 
@@ -88,25 +126,41 @@ bindkey "^j" down-line-or-beginning-search # Down
 # bindkey -r "^u"
 bindkey -r "^d"
 
-# FZF 
-# TODO update for mac
-# [ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh
-# [ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh
-# [ -f /usr/share/doc/fzf/examples/completion.zsh ] && source /usr/share/doc/fzf/examples/completion.zsh
-# [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh
-# [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-# [ -f $ZDOTDIR/completion/_fnm ] && fpath+="$ZDOTDIR/completion/"
-# export FZF_DEFAULT_COMMAND='rg --hidden -l ""'
 
-if [[ -n ${ZSH_COMPDUMP}(#qN.mh+24) ]]; then
-	compinit -i -d "$ZSH_COMPDUMP";
-else
-	compinit -C -d "$ZSH_COMPDUMP";
-fi;
+
+# if [[ -n ${ZSH_COMPDUMP}(#qN.mh+24) ]]; then
+# 	compinit -i -d "$ZSH_COMPDUMP";
+# else
+# 	compinit -C -d "$ZSH_COMPDUMP";
+# fi;
 
 # Edit line in vim with ctrl-e:
 # autoload edit-command-line; zle -N edit-command-line
 # bindkey '^e' edit-command-line
 
+
+source $ZPLUGDIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source $ZPLUGDIR/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $ZPLUGDIR/powerlevel10k/powerlevel10k.zsh-theme
+source $ZDOTDIR/p10k.zsh
+
 # zoxide to be at the end of zshrc 
 eval "$(zoxide init zsh)"
+
+
+
+# fzf-tab
+# disable sort when completing `git checkout`
+# zstyle ':completion:*:git-checkout:*' sort false
+# # set descriptions format to enable group support
+# zstyle ':completion:*:descriptions' format '[%d]'
+# # set list-colors to enable filename colorizing
+# zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# # preview directory's content with exa when completing cd
+# zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+# zstyle ':fzf-tab:complete:ls:*' fzf-preview 'exa -1 --color=always $realpath'
+# zstyle ':fzf-tab:complete:*' popup-pad 30 0 # set a bigger width to the popup win
+# # switch group using `,` and `.`
+# zstyle ':fzf-tab:*' switch-group ',' '.'
+# # use tmux popup windows for completion
+# zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
