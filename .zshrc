@@ -119,11 +119,12 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # preview directory's content with exa when completing cd
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
 zstyle ':fzf-tab:complete:ls:*' fzf-preview 'exa -1 --color=always $realpath'
-zstyle ':fzf-tab:complete:*' popup-pad 30 0 # set a bigger width to the popup win
+# zstyle ':fzf-tab:complete:*' popup-pad 0 0 # set a bigger width to the popup win
 # switch group using `,` and `.`
 zstyle ':fzf-tab:*' switch-group ',' '.'
+zstyle ':fzf-tab:*' fzf-pad 10
 # use tmux popup windows for completion
-zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
+# zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 
 
 # Key-bindings
