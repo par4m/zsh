@@ -134,3 +134,6 @@ alias nvd='cd ~/.config/nvim/ && fe'
 alias zshd='cd "$ZDOTDIR" && fe'
 alias dotf='cd ~/dotfiles && fe'
 
+
+# remove paru preview
+alias paru='paru --skipreview'
