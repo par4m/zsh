@@ -139,6 +139,7 @@ bindkey "^p" up-line-or-beginning-search # Up
 bindkey "^n" down-line-or-beginning-search # Down
 bindkey "^k" up-line-or-beginning-search # Up
 bindkey "^j" down-line-or-beginning-search # Down
+bindkey '^I' autosuggest-accept # Tab autocomplete
 # bindkey -r "^u"
 bindkey -r "^d"
 
