@@ -137,3 +137,6 @@ alias dotf='cd ~/dotfiles && fe'
 
 # remove paru preview
 alias paru='paru --skipreview'
+
+# bat gruvbox light theme
+alias bat='bat --theme=gruvbox-light'
