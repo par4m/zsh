@@ -159,6 +159,7 @@ source $ZPLUGDIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $ZPLUGDIR/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $ZPLUGDIR/powerlevel10k/powerlevel10k.zsh-theme
 source $ZDOTDIR/p10k.zsh
+source $ZDOTDIR/fzf-themes/gruvbox-light.sh
 
 # zoxide to be at the end of zshrc 
 eval "$(zoxide init zsh)"
