@@ -160,8 +160,10 @@ source $ZPLUGDIR/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $ZPLUGDIR/powerlevel10k/powerlevel10k.zsh-theme
 source $ZDOTDIR/p10k.zsh
 
-# fzf gruvbox-light theme
-source $ZDOTDIR/fzf-themes/gruvbox-light.sh
+# fzf theme
+# source $ZDOTDIR/fzf-themes/gruvbox-light.sh
+# source $ZDOTDIR/fzf-themes/everblush.sh
+source $ZDOTDIR/fzf-themes/nord.sh
 
 # zoxide to be at the end of zshrc 
 eval "$(zoxide init zsh)"
