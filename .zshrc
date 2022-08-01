@@ -11,7 +11,17 @@ export TERM=tmux-256color
 # export FZF_DEFAULT_OPTS=''
 export FZF_DEFAULT_OPTS='--height 70% --layout=default --border'
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --strip-cwd-prefix --follow --exclude .git'
-export _ZO_FZF_OPTS='--height 60% --layout=default --border'
+# zoxide fzf opts, copy the current fzf theme here
+export _ZO_FZF_OPTS='
+  --color fg:#bebebe,bg:#333A47
+  --color bg+:#81A1C1,fg+:#2c2f30
+  --color hl:#dadada,hl+:#26292a,gutter:#333A47
+  --color pointer:#373d49,info:#606672
+  --border
+  --color border:#333A47
+  --height 13
+  --layout=default
+  --height 70%'
 
 
 mkdir -p $ZDOTDIR/cache
@@ -163,8 +173,13 @@ source $ZDOTDIR/p10k.zsh
 # fzf theme
 # source $ZDOTDIR/fzf-themes/gruvbox-light.sh
 # source $ZDOTDIR/fzf-themes/everblush.sh
-source $ZDOTDIR/fzf-themes/nord.sh
+# source $ZDOTDIR/fzf-themes/nord.sh
 
 # zoxide to be at the end of zshrc 
 eval "$(zoxide init zsh)"
+
+# fzf theme (zoxide uses it so put it after it)
+# source $ZDOTDIR/fzf-themes/gruvbox-light.sh
+# source $ZDOTDIR/fzf-themes/everblush.sh
+source $ZDOTDIR/fzf-themes/nord.sh
 
