@@ -192,3 +192,4 @@ eval "$(zoxide init zsh)"
 # source $ZDOTDIR/fzf-themes/nord.sh
 source $ZDOTDIR/fzf-themes/catppuccin.sh
 
+export PATH=$PATH:/home/param/.spicetify
