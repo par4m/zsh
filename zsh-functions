@@ -66,30 +66,23 @@ function zsh_add_completion() {
 #     fi
 # fi
 
+# Open file in the editor using fasder for recent files search
 function v {
   local file
-   # if arg1 is a path to existing file then simply open it in the editor
+  # if arg1 is a path to an existing file, simply open it in the editor
   test -e "$1" && $EDITOR "$@" && return
-   # else use fasd and fzf to search for recent files
-  file="$(fasd -Rfl "$*" | fzf -1 -0 --no-sort +m)" && dir=$(dirname "$file") && cd "$dir" && $EDITOR "${file}" || $EDITOR "$@"
+  # else use fasder and fzf to search for recent files
+  file="$(fasder -f "$*" | fzf -1 -0 --no-sort +m)" && dir=$(dirname "$file") && cd "$dir" && $EDITOR "${file}" || $EDITOR "$@"
 }
 
 # cd into the directory containing a recently used file and open fzf to browse
 function vd {
   local dir
   local file
-  file="$(fasd -Rfl "$*" | fzf -1 -0 --no-sort +m)" && dir=$(dirname "$file") && cd "$dir" && fe
+  file="$(fasder -f "$*" | fzf -1 -0 --no-sort +m)" && dir=$(dirname "$file") && cd "$dir" && fe
 }
 
-# cd into given dir or search in recently used dirs
-# function z {
-#   [ $# -eq 1 ] && test -d "$1" && cd "$1" && return
-#   local dir
-#   dir="$(fasd -Rdl "$*" | fzf -1 -0 --no-sort +m)" && cd "${dir}" || return 1
-# }
-
-
-# fe [FUZZY PATTERN] - Open the selected file in the dir with the default editor
+# fe [FUZZY PATTERN] - Open the selected file in the directory with the default editor
 #   - Bypass fuzzy finder if there's only one match (--select-1)
 #   - Exit if there's no match (--exit-0)
 function fe() {
@@ -98,7 +91,6 @@ function fe() {
   'bat --color "always" {}' --preview-window=right:60% ))
   [[ -n "$files" ]] && ${EDITOR:-nvim} "${files[@]}"
 }
-
 
 # function cdf() {
 #   local file

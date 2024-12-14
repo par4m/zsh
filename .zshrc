@@ -135,8 +135,8 @@ zstyle ':completion:*:descriptions' format '[%d]'
 # set list-colors to enable filename colorizing
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # preview directory's content with exa when completing cd
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
-zstyle ':fzf-tab:complete:ls:*' fzf-preview 'exa -1 --color=always $realpath'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+zstyle ':fzf-tab:complete:ls:*' fzf-preview 'eza -1 --color=always $realpath'
 # zstyle ':fzf-tab:complete:*' popup-pad 0 0 # set a bigger width to the popup win
 # switch group using `,` and `.`
 zstyle ':fzf-tab:*' switch-group ',' '.'
@@ -183,13 +183,19 @@ source $ZDOTDIR/p10k.zsh
 # source $ZDOTDIR/fzf-themes/everblush.sh
 # source $ZDOTDIR/fzf-themes/nord.sh
 
-# zoxide to be at the end of zshrc 
-eval "$(zoxide init zsh)"
-
 # fzf theme (zoxide uses it so put it after it)
 # source $ZDOTDIR/fzf-themes/gruvbox-light.sh
 # source $ZDOTDIR/fzf-themes/everblush.sh
 # source $ZDOTDIR/fzf-themes/nord.sh
-source $ZDOTDIR/fzf-themes/catppuccin.sh
+source $ZDOTDIR/fzf-themes/new.sh
 
 export PATH=$PATH:/home/param/.spicetify
+export PATH="/opt/homebrew/bin:$PATH"
+
+# zoxide to be at the end of zshrc 
+eval "$(zoxide init zsh)"
+
+
+alias fasd='fasder'
+eval "$(fasder --init auto)"
+
